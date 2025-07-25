@@ -1,6 +1,5 @@
 import express from "express";
 import userRouter from "./routes/userRouter.js";
-import { Sequelize } from "sequelize";
 import sequelize from "./db/dbConnection.js";
 
 console.log(process.env.NEON_URI); // Log the environment variable for debugging
@@ -14,8 +13,6 @@ app.use("/users", userRouter); // USERS ROUTER
 app.use((req, res) => {
   throw new Error("Page not found");
 });
-
-sequelize.sync();
 
 app.listen(port, () => {
   process.env.NODE_ENV === "production" // check if variable NODE_ENV exists, would mean production
