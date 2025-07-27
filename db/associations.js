@@ -1,4 +1,7 @@
-import User from "./models/UserModel.js";
-import sequelize from "./db/dbConnection.js";
+import User from "../models/UserModel.js";
+import Products from "../models/ProductModel.js";
 
-sequelize.sync({ alter: true }); // Sync the database, altering tables if necessary
+import sequelize from "./dbConnection.js";
+
+User.hasMany(Products, { foreignKey: "userId" }); // Define a one-to-many relationship
+Products.belongsTo(User, { foreignKey: "userId" }); // Define the inverse relationship
