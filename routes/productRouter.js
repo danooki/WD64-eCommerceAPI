@@ -6,14 +6,18 @@ import {
   deleteProduct,
 } from "../controllers/productController.js";
 import { Router } from "express";
-import Products from "../models/ProductModel.js"; // Import the Products model
-
+import validateSchema from "../middlewares/validateSchema.js";
+import productSchema from "../schemas/productsSchema.js";
 const productsRouter = Router();
 
-productsRouter.get("/", getProducts);
-productsRouter.post("/", createProducts);
-productsRouter.get("/:id", getProductById);
-productsRouter.put("/:id", updateProduct);
-productsRouter.delete("/:id", deleteProduct);
+productsRouter
+  .route("/")
+  .get(getProducts)
+  .post(validateSchema(productSchema), createProducts);
+productsRouter
+  .route("/:id")
+  .get(getProductById)
+  .put(validateSchema(productSchema), updateProduct)
+  .delete(deleteProduct);
 
 export default productsRouter;
