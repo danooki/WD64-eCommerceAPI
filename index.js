@@ -1,14 +1,15 @@
 import express from "express";
 import userRouter from "./routes/userRouter.js";
-import sequelize from "./db/dbConnection.js";
+import orderRouter from "./routes/orderRouter.js";
 
-console.log(process.env.NEON_URI); // Log the environment variable for debugging
+// console.log(process.env.NEON_URI); // Log the environment variable for debugging
 
 const app = express();
 const port = process.env.PORT || 5050;
 
 app.use(express.json()); // Middleware to parse JSON request bodies
 app.use("/users", userRouter); // USERS ROUTER
+app.use("/orders", orderRouter); // ORDERS ROUTER
 
 app.use((req, res) => {
   throw new Error("Page not found");
