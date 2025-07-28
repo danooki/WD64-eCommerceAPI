@@ -7,4 +7,5 @@ const validateSchema = (schema) => {
     next();
   };
 };
+
 export default validateSchema;
