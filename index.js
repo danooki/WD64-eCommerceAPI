@@ -1,7 +1,7 @@
 import express from "express";
 import productRouter from "./routes/productRouter.js";
-
 import userRouter from "./routes/userRouter.js";
+import categoryRouter from "./routes/categoryRouter.js";
 import sequelize from "./db/dbConnection.js";
 import "./db/associations.js"; // Import associations to ensure they are set up
 
@@ -13,6 +13,7 @@ const port = process.env.PORT || 5050;
 app.use(express.json()); // Middleware to parse JSON request bodies
 app.use("/users", userRouter); // USERS ROUTER
 app.use("/products", productRouter); // PRODUCTS ROUTER
+app.use("/categories", categoryRouter); // CATEGORIES ROUTER
 
 app.use((req, res) => {
   throw new Error("Page not found");

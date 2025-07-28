@@ -8,4 +8,5 @@ const Products = sequelize.define("Products", {
   categoryId: { type: DataTypes.INTEGER, allowNull: false },
 });
 sequelize.sync();
+
 export default Products;
