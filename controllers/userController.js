@@ -33,8 +33,9 @@ export const getUserById = async (req, res) => {
       params: { id },
     } = req;
     const user = await User.findByPk(id);
-    if (!user) return res.status(404).json({ error: "User not found" });
-    res.json(user);
+    if (!user) throw new Error("User not found", { cause: 404 });
+    /*     if (!user) return res.status(404).json({ error: "User not found" });
+     */ res.json(user);
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
@@ -47,11 +48,16 @@ export const updateUser = async (req, res) => {
       params: { id },
     } = req;
     if (!completeName || !email || !password)
-      return res
+      throw new Error("completeName, email, and password are required", {
+        cause: 401,
+      });
+    /*     if (!completeName || !email || !password) 
+        return res
         .status(400)
         .json({ error: "completeName, email, and password are required" });
-    const user = await User.findByPk(id);
-    if (!user) return res.status(404).json({ error: "User not found" });
+ */ const user = await User.findByPk(id);
+    if (!user) throw new Error("User not found", { cause: 404 });
+    /* if (!user) return res.status(404).json({ error: "User not found" }); */
     await user.update(req.body);
     res.json(user);
   } catch (error) {
@@ -65,8 +71,9 @@ export const deleteUser = async (req, res) => {
       params: { id },
     } = req;
     const user = await User.findByPk(id);
-    if (!user) return res.status(404).json({ error: "User not found" });
-    await user.destroy();
+    if (!user) throw new Error("User not found", { cause: 404 });
+    /*     if (!user) return res.status(404).json({ error: "User not found" });
+     */ await user.destroy();
     res.json({ message: "User deleted" });
   } catch (error) {
     res.status(500).json({ error: error.message });
