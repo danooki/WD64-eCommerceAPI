@@ -1,4 +1,3 @@
-import { Router } from "express";
 import {
   getUsers,
   createUser,
@@ -6,13 +5,21 @@ import {
   deleteUser,
   getUserById,
 } from "../controllers/userController.js";
+import { Router } from "express";
+import validateSchema from "../middlewares/validateSchema.js";
+import userSchema from "../schemas/userSchema.js";
 
 const userRouter = Router();
 
-userRouter.post("/", createUser); // POST Create a new user
-userRouter.put("/", updateUser); // PUT Update an existing user
-userRouter.get("/", getUsers); // GET all users
-userRouter.get("/:id", getUserById); // GET user by ID
-userRouter.delete("/:id", deleteUser); // DELETE a user by ID
+userRouter
+  .route("/") // main route for users
+  .get(getUsers) // GET all users
+  .post(validateSchema(userSchema), createUser); // POST create a new user
+
+userRouter
+  .route("/:id") // id route for specific user
+  .put(validateSchema(userSchema), updateUser) // PUT Update user by ID
+  .get(getUserById) // GET user by ID
+  .delete(deleteUser); // DELETE a user by ID
 
 export default userRouter;
