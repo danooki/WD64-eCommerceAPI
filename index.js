@@ -4,6 +4,7 @@ import userRouter from "./routes/userRouter.js";
 import categoryRouter from "./routes/categoryRouter.js";
 import sequelize from "./db/dbConnection.js";
 import "./db/associations.js"; // Import associations to ensure they are set up
+import errorHandler from "./middlewares/errorHandler.js";
 
 console.log(process.env.NEON_URI); // Log the environment variable for debugging
 
@@ -16,8 +17,10 @@ app.use("/products", productRouter); // PRODUCTS ROUTER
 app.use("/categories", categoryRouter); // CATEGORIES ROUTER
 
 app.use((req, res) => {
-  throw new Error("Page not found");
+  throw new Error("Page doesnt exist!", { cause: 404 }); // Example route to test error handling
 });
+
+app.use(errorHandler); // Error handling middleware
 
 app.listen(port, () => {
   process.env.NODE_ENV === "production" // check if variable NODE_ENV exists, would mean production
