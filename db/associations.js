@@ -5,10 +5,14 @@ import Order from "../models/Order.js";
 import OrderItem from "../models/OrderItem.js";
 import sequelize from "./dbConnection.js";
 
-User.hasMany(Order, { foreignKey: "userId" });
+User.hasMany(Order, { foreignKey: "userId", onDelete: "CASCADE" });
 Order.belongsTo(User, { foreignKey: "userId" });
 
-Order.hasMany(OrderItem, { foreignKey: "orderId", as: "products" });
+Order.hasMany(OrderItem, {
+  foreignKey: "orderId",
+  as: "products",
+  onDelete: "CASCADE",
+});
 OrderItem.belongsTo(Order, { foreignKey: "orderId" });
 
 Products.hasMany(OrderItem, { foreignKey: "productId" });

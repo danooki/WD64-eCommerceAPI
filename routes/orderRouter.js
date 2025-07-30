@@ -7,12 +7,19 @@ import {
   deleteOrder,
 } from "../controllers/orderController.js";
 
+import orderSchema from "../schemas/orderSchema.js";
+import validateSchema from "../middlewares/validateSchema.js";
+
 const orderRouter = Router();
 
-orderRouter.get("/", getOrders); // GET all orders
-orderRouter.get("/:id", getOrderById); // GET order by ID
-orderRouter.post("/", createOrder); // POST Create a new order
-orderRouter.put("/:id", updateOrder); // PUT Update an existing order
-orderRouter.delete("/:id", deleteOrder); // DELETE a order by ID
+orderRouter
+  .route("/")
+  .get(getOrders)
+  .post(validateSchema(orderSchema), createOrder);
+orderRouter
+  .route("/:id")
+  .get(getOrderById)
+  .put(validateSchema(orderSchema), updateOrder)
+  .delete(deleteOrder);
 
 export default orderRouter;
