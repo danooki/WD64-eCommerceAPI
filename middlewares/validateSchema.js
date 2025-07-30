@@ -5,7 +5,9 @@ const validateSchema = (schema) => {
     const result = schema.safeParse(req.body);
     // console.log(result);
     if (!result.success) {
-      throw new Error(`Validation error: ${z.prettifyError(result.error)}`);
+      console.log(result.error);
+      /*       throw new Error(`Validation error: ${result.error}`);
+       */ throw new Error(`Validation error: ${z.prettifyError(result.error)}`);
     }
 
     next();
