@@ -38,7 +38,7 @@ const createOrder = async (req, res) => {
       const price = priceMap[item.productId];
       total += price * item.quantity;
     }
-    console.log(total);
+    // console.log(total);
 
     //Create Order
     const newOrder = await Order.create({ userId, total });
@@ -84,7 +84,13 @@ const getOrders = async (req, res) => {
 const getOrderById = async (req, res) => {
   try {
     const id = +req.params.id;
-    const order = await Order.findByPk(id);
+    const order = await Order.findByPk(id, {
+      include: {
+        model: OrderItem,
+        as: "products",
+        attributes: ["productId", "quantity"],
+      },
+    });
     res.json(order);
     if (!order) {
       return res.status(404).json({ message: "Order not found" });
