@@ -22,7 +22,7 @@ export const getCategoryById = async (req, res) => {
   }
 };
 
-export const createCategory = async (res, req) => {
+export const createCategory = async (req, res) => {
   try {
     const {
       body: { categoryID, categoryName },
