@@ -4,6 +4,7 @@ import Products from "../models/ProductModel.js";
 import Order from "../models/Order.js";
 import OrderItem from "../models/OrderItem.js";
 import sequelize from "./dbConnection.js";
+import Category from "../models/CategoryModel.js";
 
 User.hasMany(Order, { foreignKey: "userId", onDelete: "CASCADE" });
 Order.belongsTo(User, { foreignKey: "userId" });
@@ -20,5 +21,8 @@ OrderItem.belongsTo(Products, { foreignKey: "productId" });
 
 User.hasMany(Products, { foreignKey: "userId" }); // Define a one-to-many relationship
 Products.belongsTo(User, { foreignKey: "userId" }); // Define the inverse relationship
+
+Products.belongsTo(Category);
+Category.hasMany(Products);
 
 sequelize.sync({ alter: true });

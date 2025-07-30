@@ -14,10 +14,10 @@ export const getProducts = async (req, res) => {
 
 export const createProducts = async (req, res) => {
   try {
-    const { name, description, price, categoryId } = req.body;
+    const { name, description, price, CategoryId } = req.body;
 
     // Validate all required fields
-    if (!name || !description || !price || !categoryId) {
+    if (!name || !description || !price || !CategoryId) {
       return res.status(400).json({
         error:
           "All fields (name, description, price, categoryId) are required.",
@@ -37,7 +37,7 @@ export const createProducts = async (req, res) => {
       name,
       description,
       price,
-      categoryId,
+      CategoryId,
     });
 
     return res.status(201).json(product);
