@@ -18,7 +18,7 @@ app.use("/categories", categoryRouter); // CATEGORIES ROUTER
 app.use("/orders", orderRouter); // ORDER ROUTER
 
 app.use((req, res) => {
-  throw new Error("Page doesnt exist!", { cause: 404 }); // Example route to test error handling
+  throw new Error("Page doesnt exist! Wahahaha", { cause: 404 }); // Example route to test error handling
 });
 
 app.use(errorHandler); // Error handling middleware

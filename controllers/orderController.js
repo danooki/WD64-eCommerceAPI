@@ -3,6 +3,21 @@ import OrderItem from "../models/OrderItem.js";
 import Products from "../models/ProductModel.js";
 import User from "../models/UserModel.js";
 
+const calculateTotalPrice = (validProducts, products) => {
+  const priceMap = {};
+  validProducts.forEach((product) => {
+    priceMap[product.id] = product.price;
+  });
+
+  let total = 0;
+  for (const item of products) {
+    const price = priceMap[item.productId];
+    total += price * item.quantity;
+  }
+  return total;
+  // console.log(total);
+};
+
 const createOrder = async (req, res) => {
   const {
     body: { userId, products },
@@ -24,23 +39,12 @@ const createOrder = async (req, res) => {
   if (validProducts.length !== productIds.length) {
     return res.status(400).json({ message: "One or more products not found" });
   }
-
-  const priceMap = {};
-  validProducts.forEach((product) => {
-    priceMap[product.id] = product.price;
-  });
-
-  let total = 0;
-  for (const item of products) {
-    const price = priceMap[item.productId];
-    total += price * item.quantity;
-  }
-  // console.log(total);
+  const total = calculateTotalPrice(validProducts, products);
 
   //Create Order
   const newOrder = await Order.create({ userId, total });
 
-  //Create OrderItems
+  //Create OrderItems: {orderId:1,productId:2,quantity:2}
   const orderItems = products.map((p) => ({
     orderId: newOrder.id,
     productId: p.productId,
@@ -53,7 +57,7 @@ const createOrder = async (req, res) => {
   res.status(201).json({
     message: "Order created successfully!",
     orderId: newOrder.id,
-    products,
+    products, //This is where you decide to show the two models in one response
     total: total.toFixed(2),
   });
 };
@@ -107,18 +111,9 @@ const updateOrder = async (req, res) => {
     const productIds = products.map((p) => p.productId);
     // console.log(productIds);
     const validProducts = await Products.findAll({ where: { id: productIds } });
-    const priceMap = {};
-    validProducts.forEach((product) => {
-      priceMap[product.id] = product.price;
-    });
-    console.log(priceMap);
 
-    //calculate new total price
-    let total = 0;
-    for (const item of products) {
-      const price = priceMap[item.productId];
-      total += price * item.quantity;
-    }
+    const total = calculateTotalPrice(validProducts, products);
+
     //create new order items
     const orderItems = products.map((p) => ({
       orderId: order.id,

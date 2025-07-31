@@ -5,12 +5,12 @@ const validateSchema = (schema) => {
     const result = schema.safeParse(req.body);
     // console.log(result);
     if (!result.success) {
-      console.log(result.error);
+      console.log(result.error.issues);
       /*       throw new Error(`Validation error: ${result.error}`);
-       */ throw new Error(`Validation error: ${z.prettifyError(result.error)}`);
-    }
+       */
 
-    next();
+      throw new Error(`Validation error: ${z.prettifyError(result.error)}`);
+    }
   };
 };
 
