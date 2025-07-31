@@ -14,13 +14,12 @@ export const getProducts = async (req, res) => {
 
 export const createProducts = async (req, res) => {
   try {
-    const { name, description, price, CategoryId } = req.body;
+    const { name, description, price } = req.body;
 
     // Validate all required fields
-    if (!name || !description || !price || !CategoryId) {
+    if (!name || !description || !price) {
       return res.status(400).json({
-        error:
-          "All fields (name, description, price, categoryId) are required.",
+        error: "All fields (name, description, price) are required.",
       });
     }
 
@@ -37,7 +36,6 @@ export const createProducts = async (req, res) => {
       name,
       description,
       price,
-      CategoryId,
     });
 
     return res.status(201).json(product);
@@ -67,10 +65,9 @@ export const updateProduct = async (req, res) => {
     const { name, description, price, categoryId } = req.body;
 
     // Validate all required fields
-    if (!name || !description || !price || !categoryId) {
+    if (!name || !description || !price) {
       return res.status(400).json({
-        error:
-          "All fields (name, description, price, categoryId) are required.",
+        error: "All fields (name, description, price) are required.",
       });
     }
 
@@ -79,7 +76,7 @@ export const updateProduct = async (req, res) => {
       return res.status(404).json({ error: "Product not found" });
     }
 
-    await product.update({ name, description, price, categoryId });
+    await product.update({ name, description, price });
     res.json(product);
   } catch (error) {
     console.error("Error updating product:", error);
